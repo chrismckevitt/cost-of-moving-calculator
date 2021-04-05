@@ -54,19 +54,7 @@ const BuyerType1 = ({ state, setState, navigation }) => {
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            if (!state.isSelling && state.isFirstTimeBuyer) {
-              navigation.go("moveType");
-            } else if (!state.isFirstTimeBuyer) {
-              navigation.go("buyerType2");
-            } else if (state.isSelling && state.isFirstTimeBuyer) {
-              navigation.go("noOfBedrooms");
-            }
-          }}
-        >
-          Next
-        </Button>
+        <div>&nbsp;</div>
       </NavContainer>
     </Container>
   );
