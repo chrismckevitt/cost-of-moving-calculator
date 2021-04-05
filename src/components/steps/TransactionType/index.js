@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { Container, QuestionContainer, ButtonContainer, NavContainer } from "../style";
+import {
+  Container,
+  QuestionContainer,
+  ButtonContainer,
+  NavContainer,
+} from "../style";
 
-const TransactionType = ({ formData, setForm, navigation }) => {
-  const { isBuying, isSelling } = formData;
+const TransactionType = ({ state, setState, navigation }) => {
+  useEffect(() => {
+    if (state.isBuying && !state.isSelling) {
+      navigation.go("buyingPrice");
+    } else if (!state.isBuying && state.isSelling) {
+      navigation.go("sellingPrice");
+    } else if (state.isBuying && state.isSelling) {
+      navigation.go("sellingPrice");
+    } else {
+      return;
+    }
+  }, [state, navigation]);
 
-  var optionSelected = false;
+  const handleBuying = (e) => {
+    setState({ ...state, isBuying: e.target.value});
+  };
+
+  const handleSelling = (e) => {
+    setState({ ...state, isSelling: e.target.value });
+  };
+
+  const handleBuyingAndSelling = (e) => {
+    setState({
+      ...state,
+      isBuying: e.target.value,
+      isSelling: e.target.value
+    });
+  };
 
   return (
     <Container>
       <QuestionContainer>
-        <h1 style={{textAlign: "center"}}>Are you:</h1>
+        <h1 style={{ textAlign: "center" }}>Are you:</h1>
       </QuestionContainer>
       <ButtonContainer>
         <Button
           value={true}
           onClick={(e) => {
-            isBuying = e.target.value;
-            optionSelected = true;
-            setForm();
+            handleBuying(e);
           }}
         >
           Just buying
@@ -26,9 +53,7 @@ const TransactionType = ({ formData, setForm, navigation }) => {
         <Button
           value={true}
           onClick={(e) => {
-            isSelling = e.target.value;
-            optionSelected = true;
-            setForm();
+            handleSelling(e);
           }}
         >
           Just selling
@@ -36,33 +61,13 @@ const TransactionType = ({ formData, setForm, navigation }) => {
         <Button
           value={true}
           onClick={(e) => {
-            isBuying = e.target.value;
-            isSelling = true;
-            optionSelected = true;
-            setForm();
+            handleBuyingAndSelling(e);
           }}
         >
           Selling and buying
         </Button>
       </ButtonContainer>
-      <NavContainer>
-        <div>&nbsp;</div>
-        <Button
-          onClick={() => {
-            if (optionSelected) {
-              if (isBuying && !isSelling) {
-                navigation.go(2);
-              } else if (!isBuying && isSelling) {
-                navigation.go(1);
-              } else if (isBuying && isSelling) {
-                navigation.go(1);
-              }
-            }
-          }}
-        >
-          Next
-        </Button>
-      </NavContainer>
+      <NavContainer></NavContainer>
     </Container>
   );
 };

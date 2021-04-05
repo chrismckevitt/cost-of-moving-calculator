@@ -7,71 +7,73 @@ import {
   NavContainer,
 } from "../style";
 
-const NoOfBedrooms = ({ formData, setForm, navigation }) => {
-  const { numberOfBedrooms, isFirstTimeBuyer } = formData;
+const NoOfBedrooms = ({ state, setState, navigation }) => {
+  const handleBack = () => {
+    if (state.isBuying) {
+      if (state.isFirstTimeBuyer) {
+        setState({ ...state, isFirstTimeBuyer: false, isNotFirstTimeBuyer: false });
+        navigation.go("buyerType1");
+      } else {
+        setState({...state, isOnlyHome: false, hasMoreThanOneHome: false})
+        navigation.go("buyerType2");
+      }
+    } else {
+      navigation.go("agentCommission");
+    }
+  };
 
-  var optionSelected = false;
-
+  const handleNumberOfBedrooms = (e) => {
+    setState({ ...state, numberOfBedrooms: e.target.value });
+    navigation.go('moveType')
+  };
   return (
     <Container>
       <QuestionContainer>
-        <h1>
-          How many bedrooms does the property you&apos;re purchasing have:
-        </h1>
+        <h1>How many bedrooms does the property you&apos;re selling have:</h1>
       </QuestionContainer>
       <ButtonContainer>
         <Button
-          value="1"
+          value={1}
           onClick={(e) => {
-            numberOfBedrooms = true;
-            optionSelected = true;
-            setForm();
+            handleNumberOfBedrooms(e);
           }}
         >
           1
         </Button>
         <Button
-          value="2"
+          value={2}
           onClick={(e) => {
-            numberOfBedrooms = true;
-            optionSelected = true;
-            setForm();
+            handleNumberOfBedrooms(e);
           }}
         >
           2
         </Button>
         <Button
-          value="3"
+          value={3}
           onClick={(e) => {
-            numberOfBedrooms = true;
-            optionSelected = true;
-            setForm();
+            handleNumberOfBedrooms(e);
           }}
         >
           3
+        </Button>
+        <Button
+          value={4}
+          onClick={(e) => {
+            handleNumberOfBedrooms(e);
+          }}
+        >
+          4
         </Button>
       </ButtonContainer>
       <NavContainer>
         <Button
           onClick={() => {
-            if (isFirstTimeBuyer) {
-                navigation.go(3)
-            } else {
-              navigation.go(4);
-            }
+            handleBack();
           }}
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            if (optionSelected) {
-              navigation.go(6);
-            }
-          }}
-        >
-          Next
-        </Button>
+        <div>&nbsp;</div>
       </NavContainer>
     </Container>
   );

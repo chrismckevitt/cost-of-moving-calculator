@@ -1,70 +1,43 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {
-  Container,
-  QuestionContainer,
-  ButtonContainer,
-  NavContainer,
-} from "../style";
+import { Container, QuestionContainer, NavContainer } from "../style";
 
-const BuyingPrice = ({ formData, setForm, navigation }) => {
-  const { buyingPrice, isSelling } = formData;
-
-  var optionSelected = false;
-
+const BuyingPrice = ({ state, setState, navigation }) => {
+  const handleBack = () => {
+    if (state.isSelling) {
+      navigation.go("agentCommission");
+    } else {
+      setState({...state, isBuying: false})
+      navigation.go(0);
+    }
+  }
   return (
     <Container>
       <QuestionContainer>
-        <h1>How much are you buying the house for:</h1>
+        <h1>How much are you buying your new house for:</h1>
       </QuestionContainer>
-      <ButtonContainer>
-        <Button
-          value="100000"
-          onClick={(e) => {
-            buyingPrice = true;
-            optionSelected = true;
-            setForm();
-          }}
-        >
-          &pound;100,000;
-        </Button>
-        <Button
-          value="200000"
-          onClick={(e) => {
-            buyingPrice = true;
-            optionSelected = true;
-            setForm();
-          }}
-        >
-          &pound;300,000
-        </Button>
-        <Button
-          value="500000"
-          onClick={(e) => {
-            buyingPrice = true;
-            optionSelected = true;
-            setForm();
-          }}
-        >
-          &pound;500,000
-        </Button>
-      </ButtonContainer>
+      <label>
+        &pound;
+        <input
+          value={state.buyingPrice}
+          onChange={(e) => setState({ ...state, buyingPrice: e.target.value })}
+        />
+      </label>
+
       <NavContainer>
         <Button
           onClick={() => {
-            if (isSelling) {
-              navigation.go(1);
-            } else {
-              navigation.go(0);
-            }
+            handleBack();
           }}
         >
           Back
         </Button>
         <Button
           onClick={() => {
-            if (optionSelected) {
-              navigation.go(3);
+            if (state.isSelling) {
+              navigation.go("buyerType2");
+            } else {
+              navigation.go("buyerType1");
             }
           }}
         >

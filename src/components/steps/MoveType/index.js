@@ -7,25 +7,34 @@ import {
   NavContainer,
 } from "../style";
 
-const MoveType = ({ formData, setForm, navigation }) => {
-  const { moveType } = formData;
+const MoveType = ({ state, setState, navigation }) => {
+  const handleMoveType = (e) => {
+    setState({ ...state, moveType: e.target.value });
+    navigation.go("result");
+  };
 
-  var optionSelected = false;
+  const handleBack = () => {
+    if (state.isSelling) {
+      navigation.go("noOfBedrooms");
+    } else if (state.isBuying) {
+      if (!state.isFirstTimeBuyer) {
+        navigation.go("buyerType2");
+      } else {
+        navigation.go("buyerType1");
+      }
+    }
+  };
 
   return (
     <Container>
       <QuestionContainer>
-        <h1>
-          How will you be moving:
-        </h1>
+        <h1>How will you be moving:</h1>
       </QuestionContainer>
       <ButtonContainer>
         <Button
           value="DIY"
           onClick={(e) => {
-            moveType = true;
-            optionSelected = true;
-            setForm();
+            handleMoveType(e);
           }}
         >
           Doing it myself
@@ -33,32 +42,21 @@ const MoveType = ({ formData, setForm, navigation }) => {
         <Button
           value="Hiring a moving company"
           onClick={(e) => {
-            moveType = true;
-            optionSelected = true;
-            setForm();
+            handleMoveType(e);
           }}
         >
           Hiring a moving company
         </Button>
-        
       </ButtonContainer>
       <NavContainer>
         <Button
           onClick={() => {
-            navigation.go(5)
+            handleBack();
           }}
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            if (optionSelected) {
-              navigation.go(7);
-            }
-          }}
-        >
-          Next
-        </Button>
+        <div>&nbsp;</div>
       </NavContainer>
     </Container>
   );

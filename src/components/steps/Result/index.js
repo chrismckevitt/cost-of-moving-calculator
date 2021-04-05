@@ -8,17 +8,32 @@ import {
   NavContainer,
 } from "../style";
 
-const Result = ({ formData, navigation }) => {
-  const {
-    isSelling,
-    isBuying,
-    isFirstTimeBuyer,
-    isOnlyHome,
-    moveType,
-    sellingPrice,
-    buyingPrice,
-    numberOfBedrooms,
-  } = formData;
+const Result = ({ state, navigation, setState }) => {
+  const typeOfBuyer = () => {
+    if (state.isFirstTimeBuyer) {
+      return <li>Is a first time buyer</li>;
+    } else if (state.isOnlyHome) {
+      return <li>Will be only home</li>;
+    } else {
+      return <li>Will result in owning more than one property</li>;
+    }
+  };
+
+  const handleBack = () => {
+    setState({
+      isSelling: false,
+      isBuying: false,
+      isFirstTimeBuyer: false,
+      isNotFirstTimeBuyer: false,
+      isOnlyHome: false,
+      moveType: "",
+      sellingPrice: 0,
+      buyingPrice: 0,
+      numberOfBedrooms: 0,
+      agentComission: 0,
+    });
+    navigation.go("transactionType");
+  };
 
   return (
     <Container>
@@ -26,43 +41,45 @@ const Result = ({ formData, navigation }) => {
         <h1>Cost of moving details</h1>
       </QuestionContainer>
       <ButtonContainer>
+        <h4>User is:</h4>
         <ul>
-          {isSelling && !isBuying && (
+          {state.isSelling && !state.isBuying && (
             <>
               <li>Just selling</li>
-              <li>{`Selling for ${sellingPrice}`}</li>
+              <li>{`Selling for ${state.sellingPrice} with an agent commission of ${state.agentCommission}%`}</li>
             </>
           )}
-          {!isSelling && isBuying && (
+          {!state.isSelling && state.isBuying && (
             <>
               <li>Just buying</li>
-              <li>{`Buying for ${buyingPrice}`}</li>
+              <li>{`Buying for ${state.buyingPrice}`}</li>
             </>
           )}
-          {isSelling && isBuying && (
+          {state.isSelling && state.isBuying && (
             <>
               <li>Selling and buying</li>
-              <li>{`Selling for ${sellingPrice} and buying for ${buyingPrice}`}</li>
+              <li>{`Selling for ${state.sellingPrice} with an agent commission of ${state.agentCommission}% and buying for ${state.buyingPrice}`}</li>
             </>
           )}
-          {isBuying && isFirstTimeBuyer && <li>Is a first time buyer</li>}
-          {isBuying && isOnlyHome ? (
-            <li>Will be only home</li>
-          ) : (
-            <li>Will result in owning more than one property</li>
+          {state.isBuying && typeOfBuyer()}
+          {state.isSelling && (
+            <li>{`Property being sold has ${state.numberOfBedrooms} bedrooms`}</li>
           )}
-          {isBuying && <li>{`Property being purchased has ${numberOfBedrooms} bedrooms`}</li>}
-          {moveType === "DIY" ? <li>I will be moving my thingd myself</li> : <li>I will be hiring a company to help me move</li>}
+          {state.moveType === "DIY" ? (
+            <li>Will be moving everything themselves</li>
+          ) : (
+            <li>Will be hiring a company to help them move</li>
+          )}
         </ul>
       </ButtonContainer>
       <NavContainer>
         <div>&nbsp;</div>
         <Button
           onClick={() => {
-            navigation.go(0)
+            handleBack();
           }}
         >
-          Next
+          Restart
         </Button>
       </NavContainer>
     </Container>

@@ -1,9 +1,10 @@
-import React from "react";
-import { useForm, useStep } from "react-hooks-helper";
+import React, { useState } from "react";
+import { useStep } from "react-hooks-helper";
 
 import {
   TransactionType,
   SellingPrice,
+  AgentCommission,
   BuyingPrice,
   BuyerType1,
   BuyerType2,
@@ -15,6 +16,7 @@ import {
 const steps = [
   { id: "transactionType" },
   { id: "sellingPrice" },
+  { id: "agentCommission" },
   { id: "buyingPrice" },
   { id: "buyerType1" },
   { id: "buyerType2" },
@@ -24,28 +26,38 @@ const steps = [
 ];
 
 const CostOfMovingCalculator = () => {
-  let [formData, setForm] = useForm({
+  const [state, setState] = useState({
     isSelling: false,
     isBuying: false,
     isFirstTimeBuyer: false,
+    isNotFirstTimeBuyer: false,
     isOnlyHome: false,
-    moveType: '',
-    sellingPrice: '',
-    buyingPrice: '',
-    numberOfBedrooms: '',
+    hasMoreThanOneHome: false,
+    moveType: "",
+    sellingPrice: 0,
+    buyingPrice: 0,
+    numberOfBedrooms: 0,
+    agentComission: 0,
   });
+
   const { step, navigation } = useStep({
     steps,
     initialStep: 0,
   });
 
-  const props = { formData, setForm, navigation };
+  const props = {
+    state,
+    setState,
+    navigation,
+  };
 
   switch (step.id) {
     case "transactionType":
       return <TransactionType {...props} />;
     case "sellingPrice":
       return <SellingPrice {...props} />;
+    case "agentCommission":
+      return <AgentCommission {...props} />;
     case "buyingPrice":
       return <BuyingPrice {...props} />;
     case "buyerType1":
@@ -58,13 +70,13 @@ const CostOfMovingCalculator = () => {
       return <MoveType {...props} />;
     case "result":
       return <Result {...props} />;
+    default:
+      return (
+        <div>
+          <h1>Cost of moving calculator</h1>
+        </div>
+      );
   }
-
-  return (
-    <div>
-      <h1>Cost of moving calculator</h1>
-    </div>
-  );
 };
 
 export default CostOfMovingCalculator;

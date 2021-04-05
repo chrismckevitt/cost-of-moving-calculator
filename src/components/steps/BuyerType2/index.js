@@ -7,11 +7,23 @@ import {
   NavContainer,
 } from "../style";
 
-const BuyerType2 = ({ formData, setForm, navigation }) => {
-  const { isOnlyHome } = formData;
-
-  var optionSelected = false;
-
+const BuyerType2 = ({ state, setState, navigation }) => {
+  const handleOnlyHome = (e) => {
+    setState({ ...state, isOnlyHome: e.target.value });
+    if (!state.isSelling) {
+      navigation.go("moveType");
+    } else {
+      navigation.go("noOfBedrooms");
+    }
+  };
+  const handleNotOnlyHome = (e) => {
+    setState({ ...state, hasMoreThanOneHome: e.target.value });
+    if (!state.isSelling) {
+      navigation.go("moveType");
+    } else {
+      navigation.go("noOfBedrooms");
+    }
+  };
   return (
     <Container>
       <QuestionContainer>
@@ -22,21 +34,17 @@ const BuyerType2 = ({ formData, setForm, navigation }) => {
       </QuestionContainer>
       <ButtonContainer>
         <Button
-          value="true"
+          value={true}
           onClick={(e) => {
-            isOnlyHome = e.target.value;
-            optionSelected = true;
-            setForm();
+            handleNotOnlyHome(e);
           }}
         >
           Yes
         </Button>
         <Button
-          value="false"
+          value={true}
           onClick={(e) => {
-            isOnlyHome = e.target.value;
-            optionSelected = true;
-            setForm();
+            handleOnlyHome(e);
           }}
         >
           No
@@ -45,20 +53,12 @@ const BuyerType2 = ({ formData, setForm, navigation }) => {
       <NavContainer>
         <Button
           onClick={() => {
-            navigation.go(3);
+            navigation.go("buyerType1");
           }}
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            if (optionSelected) {
-              navigation.go(5);
-            }
-          }}
-        >
-          Next
-        </Button>
+        <div>&nbsp;</div>
       </NavContainer>
     </Container>
   );
