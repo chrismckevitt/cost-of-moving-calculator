@@ -10,6 +10,7 @@ import {
 const AgentCommission = ({ state, setState, navigation }) => {
   const handleCommission = (e) => {
     setState({ ...state, agentCommission: e.target.value });
+    /* If user is not buying we skip the buying questions */
     if (!state.isBuying) {
       navigation.go("noOfBedrooms");
     } else {
