@@ -5,7 +5,7 @@ import { Container, QuestionContainer, NavContainer } from "../style";
 const SellingPrice = ({ state, setState, navigation }) => {
 const handleBack = () => {
   
-  /* If a user goes back then we need to reset these vars to false else the navigation will be triggered straight away after render by the useEffect() on TransactionType. */
+  /* If a user goes back then we need to reset these vars to false else the navigate() will be triggered straight away after render by the useEffect() on TransactionType. */
   setState({...state, isSelling: false, isBuying: false});
   navigation.go("transactionType");
 }
