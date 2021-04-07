@@ -13,7 +13,7 @@ const BuyerType1 = ({ state, setState, navigation }) => {
   };
   
   /* If we just use a boolean for first time buyers, if they navigate back from NoOfBedrooms, isFirstTimeBuyer
-  will be reset to false so as not to trigger navigate('noOfBedrooms') automatically in the useEffect(). However isNotFirstTimeBuyer = true
+  will be reset to false so as not to trigger navigate('noOfBedrooms') automatically in the useEffect(). However isFirstTimeBuyer = true
   will also trigger navigate('buyerType2') automatically and potentially send them to a non-relevant question, so there needs to be a third state,
   hence isNotFirstTimeBuyer. */
   
