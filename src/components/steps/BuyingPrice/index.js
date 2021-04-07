@@ -35,6 +35,7 @@ const BuyingPrice = ({ state, setState, navigation }) => {
         </Button>
         <Button
           onClick={() => {
+             /* If a user is selling a property as well as buying then they are not a first-time buyer so we skip straight to BuyerType2 */
             if (state.isSelling) {
               navigation.go("buyerType2");
             } else {
