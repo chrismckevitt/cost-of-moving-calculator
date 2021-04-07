@@ -7,6 +7,7 @@ const BuyingPrice = ({ state, setState, navigation }) => {
     if (state.isSelling) {
       navigation.go("agentCommission");
     } else {
+      /* Reset isBuying to false so that the navigation isn't automatically triggered on render by the useEffect() on transaction type */
       setState({...state, isBuying: false})
       navigation.go(0);
     }
