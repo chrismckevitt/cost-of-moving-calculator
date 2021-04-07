@@ -11,6 +11,7 @@ const NoOfBedrooms = ({ state, setState, navigation }) => {
   const handleBack = () => {
     if (state.isBuying) {
       if (state.isFirstTimeBuyer) {
+        /* Reset vars to false so as not to trigger navigate() immediately after render in the useEffect() on BuyerType1. */
         setState({ ...state, isFirstTimeBuyer: false, isNotFirstTimeBuyer: false });
         navigation.go("buyerType1");
       } else {
